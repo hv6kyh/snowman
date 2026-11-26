@@ -28,7 +28,7 @@
     </main>
     <script>
       // 실제 게임 주소는 서버를 다시 켜면 바뀌어서, 바뀔 때마다 target.json 만 고친다.
-      var FALLBACK = '__TARGET__';
+      var FALLBACK = 'https://vienna-entered-assisted-labels.trycloudflare.com';
       function go(t) {
         if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$|^https:\/\/[a-z0-9.-]+$/.test(t)) t = FALLBACK;
         var q = new URLSearchParams(location.search);
