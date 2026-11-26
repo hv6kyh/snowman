@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>눈사람 동네</title>
+    <meta name="description" content="첫눈 오는 날, 명동에서 같이 눈사람 만들기" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hv6kyh.github.io/snowman/" />
+    <meta property="og:title" content="눈사람 동네" />
+    <meta property="og:description" content="첫눈 오는 날, 명동에서 같이 눈사람 만들기" />
+    <meta property="og:image" content="https://hv6kyh.github.io/snowman/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://hv6kyh.github.io/snowman/og.png" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    <style>
+      html,body{margin:0;height:100%;background:#1e2838;color:#e8eef7;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+      main{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+      a{color:#9fc4ff}
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>눈사람 동네로 가는 중</div>
+      <a id="go" href="#" hidden>안 넘어가면 눌러 주세요</a>
+    </main>
+    <script>
+      // 실제 게임 주소는 서버를 다시 켜면 바뀌어서, 바뀔 때마다 target.json 만 고친다.
+      var FALLBACK = '__TARGET__';
+      function go(t) {
+        if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$|^https:\/\/[a-z0-9.-]+$/.test(t)) t = FALLBACK;
+        var q = new URLSearchParams(location.search);
+        // 어디서 왔는지(스레드, 인스타 등)는 이 안내 페이지에서 끊기니 ref 로 넘겨 준다
+        if (!q.has('utm_source') && !q.has('ref') && document.referrer) {
+          try { q.set('ref', new URL(document.referrer).hostname); } catch (e) {}
+        }
+        var qs = q.toString();
+        var u = t + '/' + (qs ? '?' + qs : '') + location.hash;
+        var a = document.getElementById('go'); a.href = u; a.hidden = false;
+        location.replace(u);
+      }
+      fetch('target.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (j) { go(j.url); })
+        .catch(function () { go(FALLBACK); });
+    </script>
+  </body>
+</html>
