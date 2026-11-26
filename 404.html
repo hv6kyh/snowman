@@ -41,7 +41,7 @@
         var a = document.getElementById('go'); a.href = u; a.hidden = false;
         location.replace(u);
       }
-      fetch('target.json?t=' + Date.now(), { cache: 'no-store' })
+      fetch('/snowman/target.json?t=' + Date.now(), { cache: 'no-store' })
         .then(function (r) { return r.json(); })
         .then(function (j) { go(j.url); })
         .catch(function () { go(FALLBACK); });
