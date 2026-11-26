@@ -27,7 +27,7 @@
       <a id="go" href="#" hidden>안 넘어가면 눌러 주세요</a>
     </main>
     <script>
-      // 실제 게임 주소는 서버를 다시 켜면 바뀌어서, 바뀔 때마다 target.json 만 고친다.
+      // 실제 게임 주소(터널 여러 개)는 다시 켜면 바뀌어서, 바뀔 때마다 target.json 만 고친다.
       var FALLBACK = 'https://dental-older-genealogy-violation.trycloudflare.com';
       function go(t) {
         if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$|^https:\/\/[a-z0-9.-]+$/.test(t)) t = FALLBACK;
@@ -43,7 +43,11 @@
       }
       fetch('/snowman/target.json?t=' + Date.now(), { cache: 'no-store' })
         .then(function (r) { return r.json(); })
-        .then(function (j) { go(j.url); })
+        .then(function (j) {
+          // 터널 여러 개 중 하나로 골고루 보낸다 (터널 하나는 동시 접속 200 한계)
+          var list = (j.urls || []).filter(function (u) { return typeof u === 'string'; });
+          go(list.length ? list[Math.floor(Math.random() * list.length)] : j.url);
+        })
         .catch(function () { go(FALLBACK); });
     </script>
   </body>
